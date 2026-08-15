@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Maya Greenberg | Portfolio Demo</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #1a1a1a;
+    background: #ffffff;
+  }
+  nav {
+    display: flex;
+    gap: 28px;
+    padding: 28px 60px;
+    border-bottom: 1px solid #eee;
+    font-size: 15px;
+  }
+  nav a {
+    color: #444;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  nav a.active { color: #1a1a1a; font-weight: 600; }
+  nav a:hover { color: #3b6d11; }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* HOME */
+  .hero {
+    text-align: center;
+    padding: 60px 20px 20px;
+  }
+  .hero .greeting {
+    font-size: 20px;
+    color: #444;
+    font-family: Georgia, serif;
+  }
+  .hero .name {
+    font-family: 'Comic Sans MS', 'Marker Felt', cursive;
+    font-weight: bold;
+    font-size: 64px;
+    line-height: 1.05;
+    letter-spacing: 1px;
+    margin: 6px 0 0;
+  }
+  .hero .underline {
+    width: 260px;
+    height: 4px;
+    background: #3b6d11;
+    margin: 6px auto 18px;
+    border-radius: 2px;
+  }
+  .hero .tagline {
+    color: #3b6d11;
+    font-size: 18px;
+    margin-bottom: 40px;
+  }
+
+  .project-list {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 60px 100px;
+  }
+  .project-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    padding: 0;
+    margin: 0 0 32px;
+    border-bottom: none;
+    background: #f5f5f3;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  .project-row:hover { background: #efefeb; }
+  .project-row.reverse { flex-direction: row-reverse; }
+
+  .project-thumb {
+    flex: 0 0 55%;
+    overflow: hidden;
+    background: transparent;
+    line-height: 0;
+  }
+  .project-thumb img {
+    width: 100%;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .project-row:hover .project-thumb img {
+    transform: scale(1.04);
+  }
+
+  .project-info { flex: 1; padding: 32px 32px 32px 0; }
+  .project-row.reverse .project-info { padding: 32px 0 32px 32px; }
+  .project-info .label {
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 8px;
+  }
+  .project-info h2 {
+    font-size: 32px;
+    margin: 0 0 12px;
+    color: #1a1a1a;
+  }
+  .project-info p {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+    max-width: 340px;
+  }
+  .view-link {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 14px;
+    color: #3b6d11;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: all 0.25s ease;
+  }
+  .project-row:hover .view-link {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* PROJECT DETAIL PAGE */
+  .detail-hero {
+    padding: 70px 60px 50px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .detail-hero .back {
+    font-size: 14px;
+    color: #999;
+    cursor: pointer;
+    margin-bottom: 24px;
+    display: inline-block;
+  }
+  .detail-hero .back:hover { color: #3b6d11; }
+  .detail-hero h1 {
+    font-size: 42px;
+    margin: 0 0 12px;
+  }
+  .detail-hero .meta {
+    font-size: 14px;
+    color: #999;
+    margin-bottom: 24px;
+  }
+  .detail-hero .summary {
+    font-size: 17px;
+    line-height: 1.7;
+    color: #333;
+    max-width: 640px;
+  }
+  .detail-media {
+    max-width: 900px;
+    margin: 0 auto 50px;
+    padding: 0 60px;
+  }
+  .detail-media img, .detail-media video {
+    width: 100%;
+    border-radius: 8px;
+    display: block;
+    margin-bottom: 20px;
+  }
+  .detail-section {
+    max-width: 900px;
+    margin: 0 auto 60px;
+    padding: 0 60px;
+  }
+  .detail-section h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  .detail-section p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #444;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a data-page="home" class="active">Home</a>
+  <a data-page="work">Work</a>
+  <a data-page="contact">Contact</a>
+</nav>
+
+<!-- HOME PAGE -->
+<section class="page active" id="home">
+  <div class="hero">
+    <img src="site-design/hi-im-maya.png" alt="Hi! I'm Maya Greenberg" style="max-width:420px; width:100%; height:auto;">
+    <div class="tagline" style="font-family: Georgia, serif; margin-top: 32px; max-width: 420px; margin-left:auto; margin-right:auto;">
+      Feel free to take your shoes off and look around!
+      <img src="site-design/sparkle.png" alt="" style="height:16px; vertical-align:middle; margin-left:4px;">
+    </div>
+  </div>
+
+  <div class="project-list">
+
+    <div class="project-row" data-project="oh-shoot">
+      <div class="project-thumb"><img src="oh-shoot/oh-shoot.png" alt="Oh Shoot"></div>
+      <div class="project-info">
+        <div class="label">UX/UI, mobile app</div>
+        <h2>Oh Shoot</h2>
+        <p>Managing every photoshoot from first plan to final shot, in collaboration with the client.</p>
+        <span class="view-link">View project →</span>
+      </div>
+    </div>
+
+    <div class="project-row reverse" data-project="fig-monkey">
+      <div class="project-thumb"><img src="fig-monkey/fig-monkey.png" alt="Fig-Monkey"></div>
+      <div class="project-info">
+        <div class="label">Figma community asset</div>
+        <h2>Fig-Monkey</h2>
+        <p>A little work buddy that lives in your Figma file. Tamagotchi energy for designers who forget to take breaks.</p>
+        <span class="view-link">View project →</span>
+      </div>
+    </div>
+
+    <div class="project-row" data-project="spicehaus">
+      <div class="project-thumb"><img src="spicehaus/spicehaus.png" alt="Spicehaus"></div>
+      <div class="project-info">
+        <div class="label">E-commerce, web app</div>
+        <h2>Spicehaus</h2>
+        <p>A cocktail shop concept built around glass, frost, and a shopping flow that feels as smooth as the drinks.</p>
+        <span class="view-link">View project →</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECT DETAIL: OH SHOOT -->
+<section class="page" id="project-oh-shoot">
+  <div class="detail-hero">
+    <span class="back" data-page="home">← Back to work</span>
+    <h1>Oh Shoot</h1>
+    <div class="meta">UX/UI · Shenkar, Digital Products 1.0 · Year 2</div>
+    <p class="summary">An app for photographers who want to manage every photoshoot from first plan to final shot, in collaboration with the client, not just around them.</p>
+  </div>
+  <div class="detail-media">
+    <img src="oh-shoot/oh-shoot.png" alt="Oh Shoot app screens">
+  </div>
+  <div class="detail-section">
+    <h3>The problem</h3>
+    <p>Placeholder text. Describe the gap you noticed for photographers managing shoots: scattered communication, missed details, no shared timeline with clients.</p>
+  </div>
+  <div class="detail-section">
+    <h3>The approach</h3>
+    <p>Placeholder text. Key decisions: shared schedule view, pending actions dashboard, client-facing status updates.</p>
+  </div>
+</section>
+
+<!-- PROJECT DETAIL: FIG-MONKEY -->
+<section class="page" id="project-fig-monkey">
+  <div class="detail-hero">
+    <span class="back" data-page="home">← Back to work</span>
+    <h1>Fig-Monkey</h1>
+    <div class="meta">Figma Community asset · Personal project</div>
+    <p class="summary">I created an asset for the Figma community that lets other users have a little monkey friend in their project. Think Tamagotchi, but for designers who forget to blink, drink water, or get up from their chair for a break.</p>
+  </div>
+  <div class="detail-section">
+    <p>The landing page I created for the asset</p>
+  </div>
+  <div class="detail-media">
+    <video controls poster="fig-monkey/fig-monkey.png" style="width:100%; border-radius:8px; margin-bottom:20px;">
+      <source src="fig-monkey/fig-monkey-landing-page-video.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="detail-section">
+    <h3>How it works</h3>
+    <p>Placeholder text. Describe the reminder loop, theming system, and how it hangs out in the corner of a Figma file.</p>
+  </div>
+  <div class="detail-section">
+    <h3>Documentation</h3>
+    <p>Placeholder text. Full onboarding instructions were written for community use, covering setup, color themes, and timer customization.</p>
+  </div>
+</section>
+
+<!-- PROJECT DETAIL: SPICEHAUS -->
+<section class="page" id="project-spicehaus">
+  <div class="detail-hero">
+    <span class="back" data-page="home">← Back to work</span>
+    <h1>Spicehaus</h1>
+    <div class="meta">UX/UI, e-commerce · Personal project</div>
+    <p class="summary">A cocktail shop concept exploring horizontal scroll, glass and frosted-bottle effects, and a shopping flow across desktop and mobile.</p>
+  </div>
+  <div class="detail-media">
+    <img src="spicehaus/spicehaus.png" alt="Spicehaus branding">
+  </div>
+  <div class="detail-section">
+    <h3>The details</h3>
+    <p>Placeholder text. Describe the micro-interactions, product page, and cart flow shown in your screenshots.</p>
+  </div>
+</section>
+
+<!-- WORK (same list as home for now) -->
+<section class="page" id="work">
+  <div class="project-list" style="padding-top:60px;">
+    <p style="text-align:center;color:#999;margin-bottom:40px;">(This can be its own page, or you can just point "Work" to the same list as Home, up to you.)</p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="page" id="contact">
+  <div class="detail-hero" style="text-align:center;">
+    <h1>Let's talk</h1>
+    <p class="summary" style="margin:0 auto;">greenbergmaya@gmail.com<br>+972 58 454 4921</p>
+  </div>
+</section>
+
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+    const navMatch = document.querySelector('nav a[data-page="' + (id === 'home' ? 'home' : id.startsWith('project') ? 'work' : id) + '"]');
+    if (navMatch) navMatch.classList.add('active');
+    window.scrollTo(0,0);
+  }
+
+  document.querySelectorAll('nav a[data-page]').forEach(el => {
+    el.addEventListener('click', () => showPage(el.dataset.page === 'work' ? 'work' : el.dataset.page));
+  });
+
+  document.querySelectorAll('.project-row[data-project]').forEach(el => {
+    el.addEventListener('click', () => showPage('project-' + el.dataset.project));
+  });
+
+  document.querySelectorAll('.back[data-page]').forEach(el => {
+    el.addEventListener('click', () => showPage(el.dataset.page));
+  });
+</script>
+
+</body>
+</html>

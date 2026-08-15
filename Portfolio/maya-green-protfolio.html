@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maya Greenberg | Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dokdo&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  ::selection { background: #49724F; color: #ffffff; }
+  ::-moz-selection { background: #49724F; color: #ffffff; }
+  body {
+    margin: 0;
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    color: #1a1a1a;
+    background: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* Navigation */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px 5px;
+    font-size: 15px;
+    background: #ffffff;
+  }
+  .nav-left { display: flex; gap: 32px; font-family: 'Inter', sans-serif; }
+  .nav-right { display: flex; gap: 24px; font-size: 14px; font-family: 'Inter', sans-serif; transition: opacity 0.3s ease; }
+  nav a { color: #666; text-decoration: none; cursor: pointer; transition: color 0.2s ease, font-weight 0.2s ease; }
+  nav a.active { color: #1a1a1a; font-weight: 600; }
+  nav a:hover { color: #3b6d11; font-weight: 600; }
+  #navWorkLink { display: inline-flex; align-items: center; gap: 6px; }
+  #navWorkLink .back-arrow { display: inline-flex; align-items: center; line-height: 1; }
+
+  /* Hide right nav links on About page */
+  body.on-about .nav-right {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .page { display: none; flex: 1; flex-direction: column; justify-content: flex-start; }
+  .page.active { display: flex; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* FLOATING STICKY BACK TO WORK BUTTON */
+  .floating-back-work {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    background: #ffffff;
+    color: #444;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    transition: opacity 0.3s ease, transform 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    z-index: 998;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .floating-back-work.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .floating-back-work:hover {
+    color: #3b6d11;
+    border-color: #3b6d11;
+    transform: translateY(-2px);
+  }
+
+  /* FLOATING STICKY SCROLL TOP BUTTON */
+  .floating-scrollTop {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #ffffff;
+    color: #444;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    transition: opacity 0.3s ease, transform 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    z-index: 998;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .floating-scrollTop.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .floating-scrollTop:hover {
+    color: #3b6d11;
+    border-color: #3b6d11;
+    transform: translateY(-2px);
+  }
+
+  /* HOME HERO */
+  .hero { text-align: center; padding: 10px 20px 45px; }
+  .hero .tagline {
+    font-weight: 600; font-size: 21px; color: #3b6d11;
+    margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+
+  /* PROJECT LIST */
+  .project-list { max-width: 1100px; margin: 0 auto; padding: 0 60px 80px; display: flex; flex-direction: column; gap: 24px; }
+  .project-row { display: flex; align-items: center; border-radius: 20px; overflow: hidden; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; min-height: 320px; }
+  .project-row:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+  .project-row.reverse { flex-direction: row-reverse; }
+
+  .bg-orange { background: linear-gradient(90deg, #fa6d41 0%, #eb4d1f 100%); }
+  .bg-yellow { background: linear-gradient(90deg, #fbe044 0%, #f7d21c 100%); }
+  .bg-gray { background: #DA221A; }
+  .bg-black { background: linear-gradient(90deg, #1a1a1a 0%, #000000 100%); }
+  .bg-crimson { background: linear-gradient(135deg, #c81e1e 0%, #7a1212 100%); }
+  .project-row.bg-crimson .project-info { color: #ffffff; }
+  .project-row.bg-crimson .project-info .label { color: #ffffff; opacity: 0.75; }
+  .project-row.bg-crimson .project-info h2 { color: #ffffff; }
+  .project-row.bg-crimson .project-info p { color: #ffffff; opacity: 0.9; }
+  .bg-slate { background: #d4d4d4; }
+  .project-row.bg-slate .project-info { color: #1a1a1a; }
+  .project-row.bg-slate .project-info .label { color: #555; }
+  .project-row.bg-slate .project-info h2 { color: #1a1a1a; }
+  .project-row.bg-slate .project-info p { color: #333; }
+  .bg-bonus { background: #ed91d3; }
+  .project-row.bg-bonus .project-info { color: #1a1a1a; }
+  .project-row.bg-bonus .project-info .label { color: #555; }
+  .project-row.bg-bonus .project-info h2 { color: #1a1a1a; }
+  .project-row.bg-bonus .project-info p { color: #333; }
+
+  /* --- HOVER REVEAL (before/after) --- */
+  .hover-reveal-wrap { position: relative; overflow: hidden; border-radius: 8px; cursor: pointer; }
+  .hover-reveal-wrap img { display: block; width: 100%; }
+  .hover-reveal-wrap .hover-img { position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.3s ease; }
+  .hover-reveal-wrap:hover .hover-img { opacity: 1; }
+  .hover-reveal-wrap .hover-badge {
+    position: absolute; top: 10px; right: 10px; z-index: 5;
+    background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; font-weight: 700;
+    padding: 3px 8px; border-radius: 4px; letter-spacing: 0.5px; text-transform: uppercase;
+    transition: opacity 0.2s ease; pointer-events: none;
+  }
+  .hover-reveal-wrap:hover .hover-badge { opacity: 0; }
+
+  /* --- BONUS PROJECTS --- */
+  .bonus-frame { border: 1px solid #e2e2e2; border-radius: 20px; padding: 45px 50px; margin-bottom: 50px; }
+  .bonus-frame h3 { text-align: center !important; margin-bottom: 4px; }
+  .bonus-frame .bonus-subtitle { text-align: center; font-size: 14px; font-style: italic; color: #888; margin: 0 0 28px; }
+  .bonus-illustration-row { display: flex; gap: 16px; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+  .bonus-illustration-row .screen-img-wrap { flex: 1; min-width: 140px; max-width: 200px; }
+  .bonus-video-row { display: flex; gap: 20px; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+  .bonus-video-row video { width: 100%; max-width: 270px; border-radius: 8px; display: block; }
+  @media (min-width: 700px) {
+    .bonus-video-row { flex-wrap: nowrap; }
+  }
+
+  .project-thumb { flex: 0 0 55%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .project-thumb img { width: 100%; display: block; transition: transform 0.5s ease; }
+  .project-row:hover .project-thumb img { transform: scale(1.03); }
+
+  .project-row.bg-orange .project-info, .project-row.bg-gray .project-info, .project-row.bg-black .project-info { color: #ffffff; }
+  .project-row.bg-orange .project-info .label, .project-row.bg-gray .project-info .label, .project-row.bg-black .project-info .label { color: #ffffff; opacity: 0.75; }
+  .project-row.bg-orange .project-info h2, .project-row.bg-gray .project-info h2, .project-row.bg-black .project-info h2 { color: #ffffff; }
+  .project-row.bg-orange .project-info p, .project-row.bg-gray .project-info p, .project-row.bg-black .project-info p { color: #ffffff; opacity: 0.9; }
+
+  .project-row.bg-yellow .project-info { color: #1a1a1a; }
+  .project-row.bg-yellow .project-info .label { color: #444; }
+  .project-row.bg-yellow .project-info h2 { color: #000; }
+  .project-row.bg-yellow .project-info p { color: #333; }
+
+  .project-info { flex: 1; padding: 40px 50px; text-align: left; }
+  .project-info .label { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; text-align: left; }
+  .project-info h2 { font-size: 34px; font-weight: 700; margin: 0 0 16px; text-align: left; }
+  .project-info p { font-size: 16px; line-height: 1.6; margin: 0; max-width: 380px; text-align: left; }
+  
+  /* Detail Pages - Wider Header Cards */
+  .detail-hero { padding: 50px 70px; max-width: 1100px; margin: 0 auto; position: relative; width: 100%; text-align: left; }
+  .detail-hero.framed { border: 1px solid #e2e2e2; border-radius: 20px; padding: 50px 70px; margin-top: 20px; text-align: left; }
+  .detail-hero h1 { font-size: 42px; margin: 0 0 12px; text-align: left; }
+  .detail-hero .meta { font-size: 15px; color: #999; margin-bottom: 24px; text-align: left; }
+  .detail-hero .summary { font-size: 19px; line-height: 1.75; color: #333; max-width: 820px; text-align: left; text-wrap: pretty; }
+  
+  .detail-media { max-width: 1100px; margin: 0 auto 50px; padding: 0 70px; text-align: left; }
+  .detail-media img, .detail-media video { width: 100%; border-radius: 8px; display: block; margin-bottom: 20px; }
+  .detail-section { max-width: 1100px; margin: 0 auto 60px; padding: 0 70px; text-align: left; }
+  .detail-section h3 { font-size: 24px; font-weight: 700; margin-bottom: 14px; color: #111; letter-spacing: -0.2px; text-align: left; }
+  .detail-section p { font-size: 18px; line-height: 1.75; color: #444; max-width: 780px; text-align: left; text-wrap: pretty; }
+
+  /* Refined Subtle Dropdown styling - Full Width */
+  .subtle-dropdown {
+    display: block !important;
+    box-sizing: border-box;
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+    padding: 16px 20px;
+    background: #fcfcfc;
+    transition: background 0.2s ease;
+    width: 1020px !important;
+    max-width: 100%;
+    text-align: left;
+  }
+  .subtle-dropdown:hover {
+    background: #fafafa;
+  }
+  .subtle-dropdown summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    color: #666;
+    outline: none;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    text-align: left;
+  }
+  .subtle-dropdown summary::-webkit-details-marker {
+    display: none;
+  }
+  .subtle-dropdown summary::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-top: 2px solid #888;
+    border-right: 2px solid #888;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+    margin-top: -2px;
+  }
+  .subtle-dropdown[open] summary::before {
+    transform: rotate(135deg);
+  }
+
+  /* Screens List */
+  .screen-item { text-align:center; flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; }
+  .screen-item .screen-title { font-family:'Italiana', serif; font-size:28px; color:#1a1a1a; -webkit-text-stroke:1px #1a1a1a; margin:0 0 16px; white-space:nowrap; text-align: center; }
+  .screen-img-wrap { position:relative; cursor:pointer; width:100%; text-align: center; }
+  .screen-item .comparison-slider { width:100%; }
+  .screen-img-wrap img.screen-img { width:100%; height:auto; display:block; border-radius:4px; }
+  
+  /* Hover Video Wrapper for Interactive Flow Screens */
+  .hover-video-wrap { position: relative; width: 100%; text-align: left; }
+  .hover-video-wrap img.screen-img { display: block; width: 100%; border-radius: 4px; }
+  .hover-video-wrap video.flow-hover-video {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;
+    border-radius: 4px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; background: #fff;
+  }
+  .hover-video-wrap:hover video.flow-hover-video { opacity: 1; pointer-events: auto; }
+  
+  /* Interactive Indicator Badge */
+  .interactive-badge {
+    position: absolute; top: 8px; right: 8px; z-index: 5;
+    background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; font-weight: 700;
+    padding: 3px 6px; border-radius: 4px; letter-spacing: 0.5px; text-transform: uppercase;
+    pointer-events: none; transition: opacity 0.2s ease;
+  }
+  .hover-video-wrap:hover .interactive-badge { opacity: 0; }
+
+  .zoom-overlay {
+    position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.35); border-radius:4px;
+    display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s ease; pointer-events:none;
+  }
+  .screen-arrow { flex-shrink:0; width:22px; height:auto; margin-top:16px; align-self:flex-start; }
+
+  /* --- COMPARISON SLIDER CSS --- */
+  .comparison-slider { position: relative; width: 100%; text-align: left; }
+  .slider-clip { position: relative; width: 100%; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  .comparison-slider img { width: 100%; height: auto; display: block; }
+  .comparison-slider .overlay-img { position: absolute; top: 0; left: 0; clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%); z-index: 2; pointer-events: none; }
+  .slider-range { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; z-index: 10; margin: 0; }
+  .slider-line { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: white; pointer-events: none; z-index: 5; }
+  .slider-button {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 32px; height: 32px; background: white; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3); pointer-events: none; z-index: 6;
+    animation: wiggle 1.8s infinite ease-in-out;
+  }
+  .comparison-slider:hover .slider-button, .slider-range:active ~ .slider-button { animation: none; }
+  @keyframes wiggle {
+    0%, 100% { transform: translate(-50%, -50%); }
+    15% { transform: translate(calc(-50% - 4px), -50%); }
+    45% { transform: translate(calc(-50% + 4px), -50%); }
+  }
+  .slider-button::after {
+    content: ''; display: block; width: 16px; height: 16px;
+    background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" stroke="%23333" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M15 18l6-6-6-6"/><path d="M9 18l-6-6 6-6"/></svg>') no-repeat center;
+    background-size: contain;
+  }
+  .slider-zoom-btn {
+    position: absolute; top: -10px; right: -10px; z-index: 15;
+    width: 34px; height: 34px; border-radius: 50%; border: none;
+    background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; opacity: 0; transition: opacity 0.2s ease, background 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  }
+  .slider-zoom-btn svg { width: 18px; height: 18px; }
+  .comparison-slider:hover .slider-zoom-btn { opacity: 1; }
+  .slider-zoom-btn:hover { background: rgba(0,0,0,0.75); }
+
+  /* --- COMPARISON LIGHTBOX --- */
+  #comparison-lightbox {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.94); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    z-index: 999; align-items: center; justify-content: center;
+    padding: 40px; flex-direction: column;
+  }
+  #comparison-lightbox .comparison-lightbox-inner { width: 100%; max-width: 320px; max-height: 85vh; overflow-y: auto; }
+  #comparison-lightbox .comparison-slider { box-shadow: none; }
+  #comparison-lightbox-close {
+    position: absolute; top: 24px; right: 30px; z-index: 1001;
+    background: none; border: none; color: white; font-size: 28px;
+    cursor: pointer; line-height: 1;
+  }
+  #comparison-lightbox-desc {
+    margin: 16px 0 0; font-size: 15px; line-height: 1.4; color: #eee;
+    min-height: 44px; display: flex; flex-direction: column; align-items: center;
+    justify-content: flex-start; text-align: center; transition: color 0.3s ease;
+  }
+  .pp-label { color: #1a1a1a; font-weight: 600; }
+  #comparison-lightbox-desc .pp-label { color: #ffffff; }
+
+  /* --- FIG-MONKEY HOVER VIDEOS GRID --- */
+  .monkey-videos-container { display: flex; gap: 12px; justify-content: space-between; align-items: stretch; text-align: center; }
+  .monkey-video-card { flex: 1; text-align: center; min-width: 0; }
+  .monkey-video-card h4 {
+    font-size: 16px; font-weight: 700; color: #1a1a1a; margin: 0 0 10px;
+    white-space: normal; overflow: visible; text-overflow: unset; line-height: 1.3;
+    min-height: 42px; display: flex; align-items: flex-start; justify-content: center; text-align: center;
+  }
+  .monkey-video-card video {
+    width: 100%; height: auto; object-fit: contain;
+    border-top-left-radius: 10px; border-top-right-radius: 10px;
+    border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;
+    display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    background: transparent; cursor: pointer; opacity: 0.45; transition: opacity 0.3s ease;
+  }
+  .monkey-video-card video:hover { opacity: 1; }
+
+  /* --- SPICEHAUS STYLES --- */
+  .spicehaus-video-row { display: flex; gap: 24px; align-items: flex-start; justify-content: center; margin-top: 30px; text-align: center; flex-wrap: nowrap; }
+  .spicehaus-video-item { text-align: center; display: flex; flex-direction: column; align-items: center; min-width: 0; }
+  .spicehaus-video-item p.video-caption { font-size: 13px; color: #888; margin: 10px 0 0; text-align: center; }
+  .spicehaus-video-item video {
+    max-height: 400px; width: auto; height: auto; max-width: 100%; display: block; margin: 0;
+    border-radius: 14px; border: 2.5px solid #d5d4d4; background: transparent;
+  }
+  @media (max-width: 900px) {
+    .spicehaus-video-row { flex-wrap: wrap; }
+    .spicehaus-video-item video { max-height: none; width: 100%; max-width: 420px; }
+  }
+  .spicehaus-screen-title { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 14px; color: #888; margin: 0 0 16px; white-space: nowrap; text-align: center; }
+  .spicehaus-flow-img { border: 2.5px solid #d5d4d4; border-radius: 8px; overflow: hidden; text-align: left; }
+  .spicehaus-flow-img img.screen-img { border-radius: 6px; }
+
+  /* --- MOODBOARD CAROUSEL --- */
+  .mood-carousel { display: flex; align-items: center; justify-content: center; gap: 20px; max-width: 700px; margin: 0 auto; }
+  .mood-carousel img { width: 100%; max-width: 560px; border-radius: 10px; display: block; box-shadow: 0 6px 20px rgba(0,0,0,0.12); cursor: pointer; }
+  .carousel-btn {
+    flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; border: 1px solid #ddd;
+    background: #fff; font-size: 18px; color: #444; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;
+  }
+  .carousel-btn:hover { border-color: #3b6d11; color: #3b6d11; }
+  .carousel-counter { text-align: center; font-size: 13px; color: #888; margin-top: 14px; }
+  .responsiveness-video-wrap { max-width: 820px; margin: 0; text-align: left; }
+  .responsiveness-video-wrap video { width: 100%; display: block; border-radius: 10px; background: #000; }
+  .design-sys-label { font-size: 15px; font-weight: 700; margin: 0 0 12px; color: #444; text-align: left; }
+
+  @media (max-width: 900px) {
+    .project-row { flex-direction: column !important; min-height: auto; }
+    .project-thumb { width: 100%; flex: auto; }
+    .project-info { padding: 30px; text-align: left; }
+    .project-info p { max-width: 100%; margin: 0; text-align: left; }
+    .monkey-videos-container { flex-wrap: wrap; }
+    .monkey-video-card { flex: 0 0 calc(33.333% - 8px); margin-bottom: 16px; }
+  }
+
+  /* --- ABOUT PAGE (LIFTED UP EXACTLY 35PX) --- */
+  #about.active {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-between;
+  }
+  .about-main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin: auto;
+    transform: translateY(-35px);
+    width: 100%;
+    max-width: clamp(400px, 48vw, 650px);
+    padding: clamp(10px, 3vh, 40px) 20px;
+  }
+  .about-hero-container {
+    width: 115%;
+    text-align: left;
+    margin-bottom: clamp(20px, 4vh, 42px);
+  }
+  .about-hero-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .about-content-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.5vh, 16px);
+    text-align: left;
+  }
+  .about-row-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    text-align: left;
+  }
+
+  /* About page green footer - hidden by default, shown ONLY on About page */
+  #about-footer {
+    display: none;
+    background: #49724F;
+    color: #ffffff;
+    padding: clamp(16px, 2.5vh, 24px) 60px;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    z-index: 10;
+    width: 100%;
+  }
+  body.on-about #about-footer {
+    display: flex;
+  }
+</style>
+</head>
+<body>
+
+<button class="floating-back-work" id="floatBackWork" onclick="showPage('home')">← Back to work</button>
+<button class="floating-scrollTop" id="floatScrollTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Top</button>
+
+<div id="screen-lightbox" onclick="if(event.target === this) closeLightbox()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.94); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); z-index:999; align-items:center; justify-content:center;">
+  <button id="lightbox-close-btn" onclick="closeLightbox()" aria-label="Close" style="position:fixed; top:24px; right:30px; z-index:1002; background:none; border:none; color:#fff; font-size:32px; line-height:1; cursor:pointer;">×</button>
+  <div id="lightbox-img-scroll" style="max-width:90%; max-height:90%; overflow:hidden;" onclick="event.stopPropagation();">
+    <div id="lightbox-img-wrap" style="position:relative; display:inline-block;">
+      <img id="lightbox-img" src="" alt="" onclick="handleLightboxImgClick(event)" style="max-width:100%; max-height:90vh; border-radius:8px; display:block; transition:opacity 0.15s ease;">
+    </div>
+  </div>
+</div>
+
+<div id="comparison-lightbox" onclick="if(event.target === this) closeComparisonLightbox()">
+  <button id="comparison-lightbox-close" onclick="closeComparisonLightbox()" aria-label="Close">×</button>
+  <div class="comparison-lightbox-inner">
+    <div class="comparison-slider">
+      <div class="slider-clip">
+        <img src="oh-shoot/six-screens/pack-screen.png" alt="Pack screen">
+        <img src="oh-shoot/six-screens/plan-screen.png" alt="Plan screen" class="overlay-img" style="clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);">
+        <input type="range" min="0" max="100" value="50" class="slider-range" id="lightbox-slider-range" oninput="updateSlider(this, 'comparison-lightbox-desc')">
+        <div class="slider-line"></div>
+        <div class="slider-button"></div>
+      </div>
+    </div>
+    <p id="comparison-lightbox-desc">Drag to switch views</p>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-left">
+    <a data-page="home" class="active" id="navWorkLink">Work</a>
+    <a data-page="about">About</a>
+  </div>
+  <div class="nav-right">
+    <a href="#" id="navEmailLink" onclick="copyEmail(event, this)">Email</a>
+    <a href="https://www.linkedin.com/in/greenbergmaya/" target="_blank">LinkedIn</a>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<section class="page active" id="home">
+  <div class="hero">
+    <img src="site-design/hi-im-maya.png" alt="Hi! I'm Maya Greenberg" style="max-width: 720px; width: 100%; height: auto; display: block; margin: 0 auto;">
+    <div class="tagline">
+      Feel free to take your shoes off and look around!
+      <img src="site-design/sparkle.png" alt="" style="height:22px;">
+    </div>
+  </div>
+
+  <div class="project-list">
+    <div class="project-row bg-orange" data-project="oh-shoot">
+      <div class="project-thumb"><img src="oh-shoot/oh-shoot.png" alt="Oh Shoot"></div>
+      <div class="project-info">
+        <div class="label">Mobile app</div>
+        <h2>Oh Shoot</h2>
+        <p>Managing every photoshoot from first plan to final shot, in collaboration with the client.</p>
+      </div>
+    </div>
+    <div class="project-row reverse bg-yellow" data-project="fig-monkey">
+      <div class="project-thumb"><img src="fig-monkey/fig-monkey.png" alt="Fig-Monkey"></div>
+      <div class="project-info">
+        <div class="label" style="color: #444;">Figma community asset</div>
+        <h2 style="color: #000;">Fig-Monkey</h2>
+        <p style="color: #333;">A little work buddy that lives in your Figma file. Tamagotchi energy for designers who forget to take breaks.</p>
+      </div>
+    </div>
+    <div class="project-row bg-gray" data-project="spicehaus">
+      <div class="project-thumb"><img src="spicehaus/spicehaus.png" alt="Spicehaus"></div>
+      <div class="project-info">
+        <div class="label">Digital store</div>
+        <h2>Spicehaus</h2>
+        <p>A cocktail shop concept built around glass, frost, and a shopping flow that feels as smooth as the drinks.</p>
+      </div>
+    </div>
+    <div class="project-row reverse bg-black" data-project="final-dinner">
+      <div class="project-thumb"><img src="the-final-dinner/rsvp-thumbnail.png" alt="The Final Dinner at Black's Manor"></div>
+      <div class="project-info">
+        <div class="label">RSVP landing page & event app</div>
+        <h2>The Final Dinner</h2>
+        <p>An invitation-only RSVP for a mysterious, exclusive dinner, where the chosen few get to play out a role in the town's own murder mystery.</p>
+      </div>
+    </div>
+    <div class="project-row bg-slate" data-project="vinyl">
+      <div class="project-thumb"><img src="vinyl/thumbnail.jpg" alt="Kids Against The Machine vinyl"></div>
+      <div class="project-info">
+        <div class="label">Vinyl packaging</div>
+        <h2>Kids Against The Machine</h2>
+        <p>Handmade, raw packaging for Noga Erez's fully acoustic Kids album, printed and assembled entirely by hand.</p>
+      </div>
+    </div>
+    <div class="project-row reverse bg-bonus" data-project="bonus">
+      <div class="project-thumb"><img src="bonus/thumbnail-bonus.png" alt="Bonus projects"></div>
+      <div class="project-info">
+        <div class="label">Extra work</div>
+        <h2>Bonus Projects</h2>
+        <p>A small collection of illustration, motion, and stop motion, made just because I enjoy it.</p>
+      </div>
+    </div>
+  </div>
+  
+  <footer class="site-footer" style="text-align:center; padding:60px 20px 40px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
+    <a href="#" onclick="copyValue(event, this, 'greenbergmaya@gmail.com')" style="color:#444; margin-right:20px;">greenbergmaya@gmail.com</a>
+    <a href="#" onclick="copyValue(event, this, '+972 58 454 4921')" style="color:#444; margin-right:20px;">+972 58 454 4921</a>
+    <a href="https://www.linkedin.com/in/greenbergmaya/" target="_blank" style="color:#444;">LinkedIn</a>
+  </footer>
+</section>
+
+<!-- PROJECT DETAIL: OH SHOOT -->
+<section class="page" id="project-oh-shoot">
+  <div class="detail-hero framed">
+    <h1><img src="oh-shoot/oh-shoot-logotype.png" alt="Oh Shoot" style="height:42px; width:auto; display:block;"></h1>
+    <div class="meta">Mobile app for photographers and their clients</div>
+    <p class="summary">An app for photographers who want to manage every photoshoot from first plan to final shot, in collaboration with the client, not just around them.</p>
+  </div>
+  
+  <div class="detail-section" style="margin-top: 20px; display:flex; gap:50px; align-items:stretch;">
+    <div style="flex:1; min-width:0; display:flex; flex-direction:column; align-items:center;">
+      <video muted autoplay playsinline controls preload="auto" onloadedmetadata="this.currentTime=0.1; this.pause();" style="height:455px; width:auto; max-width:100%; object-fit:cover; border-radius:38px; box-shadow:0 4px 14px rgba(0,0,0,0.1); background:transparent;">
+        <source src="oh-shoot/oh-shoot-runthrough.mp4" type="video/mp4">
+      </video>
+      <p style="font-size:13px; color:#888; margin:10px 0 0; text-align:center;">App runthrough</p>
+    </div>
+    <div style="flex:2; min-width:0; display:flex; flex-direction:column; gap:40px;">
+      <div>
+        <h3>The problem</h3>
+        <p>Photographers managing a shoot juggle five different tools: texts with the client, notes for outfit ideas, a spreadsheet for gear, a calendar, and email for delivery. Nothing lives in one place, and the client is mostly left out until the day itself.</p>
+      </div>
+      <div>
+        <h3>The approach</h3>
+        <p>Oh Shoot brings it all into one shared space: booking, inspiration, packing and outfit planning, a day-of schedule, and delivery. The photographer plans everything with the client, not around them.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-section" style="max-width:1100px; text-align:center; margin-top:70px; margin-bottom:30px;">
+    <p style="font-family:'Italiana', serif; font-size:24px; color:#1a1a1a; margin:0; max-width:none; text-align: center;"><span style="background:#49724F; color:#ffffff; padding:4px 14px; border-radius:4px;">The app works both for the photographer and the client</span></p>
+  </div>
+
+  <div class="detail-section" style="max-width:1100px;">
+    <div style="display:flex; align-items:flex-start; justify-content:flex-start; gap:18px;">
+
+      <div class="screen-item">
+        <p class="screen-title">Book</p>
+        <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/six-screens/book-screen.png')">
+          <img class="screen-img" src="oh-shoot/six-screens/book-screen.png" alt="Book screen">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+      <img class="screen-arrow" src="oh-shoot/six-screens/Arrow.svg" alt="">
+      
+      <div class="screen-item">
+        <p class="screen-title">Get inspired</p>
+        <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/six-screens/inspired-screen.png')">
+          <img class="screen-img" src="oh-shoot/six-screens/inspired-screen.png" alt="Get inspired screen">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+      <img class="screen-arrow" src="oh-shoot/six-screens/Arrow.svg" alt="">
+      
+      <div class="screen-item" style="flex: 1.1;">
+        <p class="screen-title">Plan &amp; Pack</p>
+        <div class="comparison-slider">
+          <div class="slider-clip">
+            <img src="oh-shoot/six-screens/pack-screen.png" alt="Pack screen">
+            <img src="oh-shoot/six-screens/plan-screen.png" alt="Plan screen" class="overlay-img" style="clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);">
+            <input type="range" min="0" max="100" value="50" class="slider-range" oninput="updateSlider(this, 'plan-pack-desc')">
+            <div class="slider-line"></div>
+            <div class="slider-button"></div>
+          </div>
+          <button class="slider-zoom-btn" onclick="openComparisonLightbox()" aria-label="Enlarge comparison">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+        </div>
+        <p id="plan-pack-desc" style="margin: 12px 0 0; font-size: 15px; line-height: 1.4; color: #555; min-height: 44px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; transition: color 0.3s ease; text-align: center;">
+          Drag to switch views
+        </p>
+      </div>
+      
+      <img class="screen-arrow" src="oh-shoot/six-screens/Arrow.svg" alt="">
+      
+      <div class="screen-item">
+        <p class="screen-title">Schedule</p>
+        <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/six-screens/schedule-screen.png')">
+          <img class="screen-img" src="oh-shoot/six-screens/schedule-screen.png" alt="Schedule screen">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+      <img class="screen-arrow" src="oh-shoot/six-screens/Arrow.svg" alt="">
+      
+      <div class="screen-item">
+        <p class="screen-title">Deliver</p>
+        <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/six-screens/deliver-screen.png')">
+          <img class="screen-img" src="oh-shoot/six-screens/deliver-screen.png" alt="Deliver screen">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="detail-section" style="max-width:1100px; text-align:left; margin-top:110px;">
+    <p style="font-family:'Italiana', serif; font-size:38px; color:#1a1a1a; -webkit-text-stroke:1px #1a1a1a; margin:0 0 8px; max-width:none; text-align: left;">Main dynamic screen</p>
+    <p style="font-size:19px; color:#333; margin:0; max-width:none; text-align: left;">Adapts for what you need now</p>
+  </div>
+
+  <div class="detail-section" style="max-width:1100px; margin-top:50px;">
+    <div style="display:flex; align-items:flex-start; justify-content:center; gap:32px; flex-wrap:wrap;">
+      <div style="flex:0 1 260px; text-align:left;">
+        <p style="font-family:'Italiana', serif; font-size:20px; color:#1a1a1a; -webkit-text-stroke:1px #1a1a1a; margin:0 0 14px; text-align: center;">Urgent actions</p>
+        <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/dynamic/urgent-actions.png')">
+          <img class="screen-img" src="oh-shoot/dynamic/urgent-actions.png" alt="Urgent actions screen">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+      <div style="flex:0 1 260px; text-align:left;">
+        <p style="font-family:'Italiana', serif; font-size:20px; color:#1a1a1a; -webkit-text-stroke:1px #1a1a1a; margin:0 0 14px; text-align: center;">Live events</p>
+        <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/dynamic/live-events.png')">
+          <img class="screen-img" src="oh-shoot/dynamic/live-events.png" alt="Live events screen">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+      <div style="flex:0 1 260px; text-align:left;">
+        <p style="font-family:'Italiana', serif; font-size:20px; color:#1a1a1a; -webkit-text-stroke:1px #1a1a1a; margin:0 0 14px; text-align: center;">Later events, stay for later</p>
+        <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/dynamic/later-events.png')">
+          <img class="screen-img" src="oh-shoot/dynamic/later-events.png" alt="Later events screen">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-section" style="max-width:1100px; margin-top:100px;">
+    <p style="font-family:'Italiana', serif; color:#1a1a1a; -webkit-text-stroke:1px #1a1a1a; font-size:38px; line-height:1.2; margin:0 0 40px; text-transform:uppercase; text-align: left;">Manage<br>your projects<br>and payments</p>
+    <div style="display:flex; align-items:flex-end; justify-content:flex-start; padding:20px 0 40px;">
+      <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/project-payments/client-cards.png')" style="width:220px; flex-shrink:0; z-index:1; transform:translateY(60px);">
+        <img class="screen-img" src="oh-shoot/project-payments/client-cards.png" alt="Client cards and tasks screen">
+        <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      </div>
+      <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/project-payments/manage-clients.png')" style="width:220px; flex-shrink:0; z-index:2; margin-left:-40px; transform:translateY(20px);">
+        <img class="screen-img" src="oh-shoot/project-payments/manage-clients.png" alt="Manage clients screen">
+        <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      </div>
+      <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/project-payments/project-status.png')" style="width:220px; flex-shrink:0; z-index:3; margin-left:-40px;">
+        <img class="screen-img" src="oh-shoot/project-payments/project-status.png" alt="Project status screen">
+        <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      </div>
+      <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/project-payments/payment.png')" style="width:220px; flex-shrink:0; z-index:4; margin-left:-40px; transform:translateY(-30px);">
+        <img class="screen-img" src="oh-shoot/project-payments/payment.png" alt="Payment confirmation screen">
+        <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-section" style="max-width:1100px; margin-top:80px;">
+    <h3 style="margin-bottom: 24px;">Wireframes</h3>
+    <div style="display:flex; align-items:flex-start; justify-content:flex-start; gap:24px;">
+      <div style="flex:1; min-width:0; text-align:center;">
+        <p style="font-family:'Italiana', serif; font-size:18px; color:#1a1a1a; -webkit-text-stroke:1px #1a1a1a; margin:0 0 12px;">Low fidelity</p>
+        <div class="screen-img-wrap" onclick="openWireframeLightbox('oh-shoot/wireframes/low-fidelity-wireframe.png')">
+          <img class="screen-img" src="oh-shoot/wireframes/low-fidelity-wireframe.png" alt="Low fidelity wireframes">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+      <div style="flex:1; min-width:0; text-align:center;">
+        <p style="font-family:'Italiana', serif; font-size:18px; color:#1a1a1a; -webkit-text-stroke:1px #1a1a1a; margin:0 0 12px;">Medium fidelity</p>
+        <div class="screen-img-wrap" onclick="openWireframeLightbox('oh-shoot/wireframes/medium-fidelity-wireframes.png')">
+          <img class="screen-img" src="oh-shoot/wireframes/medium-fidelity-wireframes.png" alt="Medium fidelity wireframes">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+      <div style="flex:1; min-width:0; text-align:center;">
+        <p style="font-family:'Italiana', serif; font-size:18px; color:#1a1a1a; -webkit-text-stroke:1px #1a1a1a; margin:0 0 12px;">Final</p>
+        <div class="screen-img-wrap" onclick="openWireframeLightbox('oh-shoot/wireframes/Final.png')">
+          <img class="screen-img" src="oh-shoot/wireframes/Final.png" alt="Final wireframes">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer" style="text-align:center; padding:60px 20px 40px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
+    <a href="#" onclick="copyValue(event, this, 'greenbergmaya@gmail.com')" style="color:#444; margin-right:20px;">greenbergmaya@gmail.com</a>
+    <a href="#" onclick="copyValue(event, this, '+972 58 454 4921')" style="color:#444; margin-right:20px;">+972 58 454 4921</a>
+    <a href="https://www.linkedin.com/in/greenbergmaya/" target="_blank" style="color:#444;">LinkedIn</a>
+  </footer>
+</section>
+
+<!-- PROJECT DETAIL: FIG-MONKEY -->
+<section class="page" id="project-fig-monkey">
+  <div class="detail-hero framed" style="position: relative; overflow: hidden; padding-right: 280px;">
+    <div>
+      <h1><img src="fig-monkey/fig-monkey-logotype.png" alt="Fig-Monkey" style="height:42px; width:auto; display:block;"></h1>
+      <div class="meta">Figma Community asset</div>
+      <p class="summary" style="max-width: 680px;">I created an asset for the Figma community that lets other users have a little monkey friend in their project. Think Tamagotchi, but for designers who forget to blink, drink water, or get up from their chair for a break.</p>
+    </div>
+
+    <!-- Hero video with rounded top corners and sharp bottom corners -->
+    <video autoplay muted loop playsinline controls
+      style="position: absolute; top: 0; right: 0; width: 220px; height: auto; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-left-radius: 0px; border-bottom-right-radius: 0px; box-shadow: -4px 10px 24px rgba(0,0,0,0.12); background: #000; display: block;">
+      <source src="fig-monkey/fig-monkey-in-action-video.mp4" type="video/mp4">
+    </video>
+  </div>
+  
+  <div class="detail-section" style="margin-top: 50px; margin-bottom: 12px;">
+    <h3 style="margin-bottom: 0; text-align: left;">Fig-Monkey landing page</h3>
+  </div>
+
+  <div class="detail-media">
+    <video muted loop playsinline controls preload="metadata" style="width:100%; border-radius:8px; margin-bottom:20px;">
+      <source src="fig-monkey/fig-monkey-landing-page-video.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <!-- LANDING PAGE STYLE GUIDE (Dropdown full width) -->
+  <div class="detail-section">
+    <details class="subtle-dropdown" style="display:block; width:1020px; max-width:100%; box-sizing:border-box;">
+      <summary>Landing page style guide</summary>
+      <div style="margin-top: 24px;">
+        <div style="display: flex; gap: 24px; align-items: flex-start; justify-content: flex-start; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 280px; text-align: left;">
+            <p class="design-sys-label">Color palette</p>
+            <div class="screen-img-wrap" onclick="openLightbox('fig-monkey/design-system/landing-page-color-palete.png')">
+              <img class="screen-img" src="fig-monkey/design-system/landing-page-color-palete.png" alt="Landing page color palette" style="border-radius: 8px; width: 100%; display: block;">
+              <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 280px; text-align: left;">
+            <p class="design-sys-label">Typography</p>
+            <div class="screen-img-wrap" onclick="openLightbox('fig-monkey/design-system/landing-page-typography.png')">
+              <img class="screen-img" src="fig-monkey/design-system/landing-page-typography.png" alt="Landing page typography" style="border-radius: 8px; width: 100%; display: block;">
+              <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- VIDEOS ROW SECTION -->
+  <div class="detail-section" style="max-width: 1100px; margin-top: 60px;">
+    <div class="monkey-videos-container">
+      
+      <!-- 1. Petting -->
+      <div class="monkey-video-card">
+        <h4>Pet</h4>
+        <video muted loop playsinline preload="metadata" onloadedmetadata="this.currentTime=0.1" onmouseenter="this.play()" onmouseleave="this.pause()">
+          <source src="fig-monkey/videos/petting.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <!-- 2. Feed Bananas -->
+      <div class="monkey-video-card">
+        <h4>Feed</h4>
+        <video muted loop playsinline preload="metadata" onloadedmetadata="this.currentTime=0.1" onmouseenter="this.play()" onmouseleave="this.pause()">
+          <source src="fig-monkey/videos/feed-bananas.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <!-- 3. Checklist -->
+      <div class="monkey-video-card">
+        <h4>Create checklist</h4>
+        <video muted loop playsinline preload="metadata" onloadedmetadata="this.currentTime=0.1" onmouseenter="this.play()" onmouseleave="this.pause()">
+          <source src="fig-monkey/videos/checklist.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <!-- 4. Timer -->
+      <div class="monkey-video-card">
+        <h4>Set timer</h4>
+        <video muted loop playsinline preload="metadata" onloadedmetadata="this.currentTime=0.1" onmouseenter="this.play()" onmouseleave="this.pause()">
+          <source src="fig-monkey/videos/timer.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <!-- 5. Water Break -->
+      <div class="monkey-video-card">
+        <h4>Drinking reminder</h4>
+        <video muted loop playsinline preload="metadata" onloadedmetadata="this.currentTime=0.1" onmouseenter="this.play()" onmouseleave="this.pause()">
+          <source src="fig-monkey/videos/water-break.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <!-- 6. Stretch Break -->
+      <div class="monkey-video-card">
+        <h4>Stretching reminder</h4>
+        <video muted loop playsinline preload="metadata" onloadedmetadata="this.currentTime=0.1" onmouseenter="this.play()" onmouseleave="this.pause()">
+          <source src="fig-monkey/videos/stretch-break.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <!-- 7. Changing Colors -->
+      <div class="monkey-video-card">
+        <h4>Customize</h4>
+        <video muted loop playsinline preload="metadata" onloadedmetadata="this.currentTime=0.1" onmouseenter="this.play()" onmouseleave="this.pause()">
+          <source src="fig-monkey/videos/changing-colors.mp4" type="video/mp4">
+        </video>
+      </div>
+
+    </div>
+    <p style="font-size: 13px; color: #888; margin: 16px 0 0; text-align: center; max-width: none;">Play with Hover</p>
+  </div>
+
+  <!-- HOW HE LOOKS INSIDE YOUR FIGMA -->
+  <div class="detail-section" style="max-width: 1100px; margin-top: 60px;">
+    <h3 style="margin-bottom: 24px; text-align: center;">How he looks inside your figma</h3>
+    <div class="detail-media" style="margin: 0;">
+      <img src="fig-monkey/project-screenshot.png" alt="Fig-Monkey inside Figma" style="width: 100%; border-radius: 8px; display: block;">
+    </div>
+  </div>
+
+  <!-- CONCEPT -->
+  <div class="detail-section">
+    <h3>The concept</h3>
+    <p>Fig-Monkey is there to gently remind you to reconnect with your own needs while you work, and to lighten up an atmosphere that can otherwise get pretty stressful.</p>
+  </div>
+
+  <!-- DOCUMENTATION -->
+  <div class="detail-section">
+    <h3>Documentation &amp; Customization</h3>
+    <p>Designing a public asset meant making the tool accessible and intuitive for others. I wrote clear onboarding instructions covering setup and timer customization, while building out flexible color options so users could easily adapt the monkey to their personal taste and screens.</p>
+  </div>
+  <div class="detail-media">
+    <div style="cursor: pointer;" onclick="openWireframeLightbox('fig-monkey/fig-monkey-asset-instructions.png')">
+      <img id="instructions-img" src="fig-monkey/fig-monkey-asset-instructions.png" alt="Fig-Monkey onboarding documentation overview" style="display:block; width:100%; border-radius:8px;">
+    </div>
+  </div>
+
+  <div class="detail-media" style="max-width: 1100px;">
+    <div style="display: flex; gap: 20px; align-items: flex-start; justify-content: flex-start;">
+      <div style="flex: 1; text-align: left;">
+        <h4 style="font-size: 14px; font-weight: 700; color: #1a1a1a; margin: 0 0 12px; text-align: center;">Asset Pages</h4>
+        <img src="fig-monkey/page-layout.jpg" alt="Fig-Monkey Figma file page organization" style="height: 281px; width: auto; max-width: 100%; border-radius: 8px; display: inline-block; object-fit: contain;">
+      </div>
+      <div style="flex: 1; text-align: left;">
+        <h4 style="font-size: 14px; font-weight: 700; color: #1a1a1a; margin: 0 0 12px; text-align: center;">Frame Structure</h4>
+        <img src="fig-monkey/structure.png" alt="Fig-Monkey layer structure" style="width: 100%; height: auto; border-radius: 8px; display: block;">
+      </div>
+      <div style="flex: 1; text-align: left;">
+        <h4 style="font-size: 14px; font-weight: 700; color: #1a1a1a; margin: 0 0 12px; text-align: center;">Prototype Flow</h4>
+        <img src="fig-monkey/prototype-structure.png" alt="Fig-Monkey prototype flow structure" style="width: 100%; height: auto; border-radius: 8px; display: block;">
+      </div>
+    </div>
+  </div>
+
+  <!-- EARLY SKETCHES (Dropdown full width) -->
+  <div class="detail-section">
+    <details class="subtle-dropdown" style="display:block; width:1020px; max-width:100%; box-sizing:border-box;">
+      <summary>Early sketches</summary>
+      <div style="margin-top: 20px;">
+        <p style="margin-bottom: 20px; text-align: left;">
+          At first, I didn't think about the technical constraint of placing a free-roaming character directly onto the canvas. I then decided to embrace the preview window, allowing the monkey to live right inside the interface as part of the Figma project.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <div class="screen-img-wrap" onclick="openLightbox('fig-monkey/first-sketch.png')">
+            <img class="screen-img" src="fig-monkey/first-sketch.png" alt="Fig-Monkey first sketch" style="border-radius: 8px; width: 100%; display: block;">
+            <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          </div>
+          <div class="screen-img-wrap" onclick="openLightbox('fig-monkey/drafts.png')">
+            <img class="screen-img" src="fig-monkey/drafts.png" alt="Fig-Monkey drafts" style="border-radius: 8px; width: 100%; display: block;">
+            <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <footer class="site-footer" style="text-align:center; padding:60px 20px 40px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
+    <a href="#" onclick="copyValue(event, this, 'greenbergmaya@gmail.com')" style="color:#444; margin-right:20px;">greenbergmaya@gmail.com</a>
+    <a href="#" onclick="copyValue(event, this, '+972 58 454 4921')" style="color:#444; margin-right:20px;">+972 58 454 4921</a>
+    <a href="https://www.linkedin.com/in/greenbergmaya/" target="_blank" style="color:#444;">LinkedIn</a>
+  </footer>
+</section>
+
+<!-- PROJECT DETAIL: SPICEHAUS -->
+<section class="page" id="project-spicehaus">
+  <div class="detail-hero framed">
+    <h1><img src="spicehaus/spicehaus-logo.png" alt="Spicehaus" style="height:42px; width:auto; display:block;"></h1>
+    <div class="meta">Digital store</div>
+    <p class="summary">A digital store focused on tactile product presentation, glass and frosted-bottle effects, and a smooth shopping flow across desktop and mobile.</p>
+  </div>
+
+  <div class="detail-section">
+    <h3>The details</h3>
+    <p>The starting point for this project was an existing brand: Spicehaus. The goal was to find where micro-animations could add character and personality to the shopping experience, without tipping into anything overdone or distracting. Simplicity and ease of use stayed the priority throughout, with the animation work layered on top rather than driving the design.</p>
+  </div>
+
+  <div class="detail-section">
+    <h3 style="text-align: center;">Playthrough</h3>
+    <div class="spicehaus-video-row">
+      <div class="spicehaus-video-item">
+        <video controls playsinline preload="metadata">
+          <source src="spicehaus/mobile.mp4" type="video/mp4">
+        </video>
+        <p class="video-caption">Mobile</p>
+      </div>
+      <div class="spicehaus-video-item">
+        <video controls playsinline preload="metadata">
+          <source src="spicehaus/Desktop.mp4" type="video/mp4">
+        </video>
+        <p class="video-caption">Desktop</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-section">
+    <h3 style="text-align: center;">User flow</h3>
+    <div style="display:flex; align-items:flex-start; justify-content:flex-start; gap:28px; flex-wrap:wrap; margin-top:10px;">
+
+      <!-- 1. Browse shop (Interactive with splashscreen.mp4) -->
+      <div class="screen-item">
+        <p class="spicehaus-screen-title">Browse shop</p>
+        <div class="hover-video-wrap spicehaus-flow-img">
+          <span class="interactive-badge">hover</span>
+          <img class="screen-img" src="spicehaus/browse-shop.png" alt="Browse shop screen">
+          <video class="flow-hover-video" muted loop playsinline preload="metadata" onmouseenter="this.play()" onmouseleave="this.pause()">
+            <source src="spicehaus/videos/splashscreen.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <img class="screen-arrow" src="oh-shoot/six-screens/Arrow.svg" alt="">
+
+      <!-- 2. Item page (Interactive with item-page.mp4) -->
+      <div class="screen-item">
+        <p class="spicehaus-screen-title">Item page</p>
+        <div class="hover-video-wrap spicehaus-flow-img">
+          <span class="interactive-badge">hover</span>
+          <img class="screen-img" src="spicehaus/item-page.png" alt="Item page screen">
+          <video class="flow-hover-video" muted loop playsinline preload="metadata" onmouseenter="this.play()" onmouseleave="this.pause()">
+            <source src="spicehaus/videos/item-page.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <img class="screen-arrow" src="oh-shoot/six-screens/Arrow.svg" alt="">
+
+      <!-- 3. Add to cart (Static) -->
+      <div class="screen-item">
+        <p class="spicehaus-screen-title">Add to cart</p>
+        <div class="screen-img-wrap spicehaus-flow-img" onclick="openLightbox('spicehaus/add-to-cart.png')">
+          <img class="screen-img" src="spicehaus/add-to-cart.png" alt="Add to cart screen">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+      <img class="screen-arrow" src="oh-shoot/six-screens/Arrow.svg" alt="">
+
+      <!-- 4. Checkout (Static) -->
+      <div class="screen-item">
+        <p class="spicehaus-screen-title">Checkout</p>
+        <div class="screen-img-wrap spicehaus-flow-img" onclick="openLightbox('spicehaus/checkout.png')">
+          <img class="screen-img" src="spicehaus/checkout.png" alt="Checkout screen">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+      <img class="screen-arrow" src="oh-shoot/six-screens/Arrow.svg" alt="">
+
+      <!-- 5. Confirmation (Interactive with confirmation.mp4) -->
+      <div class="screen-item">
+        <p class="spicehaus-screen-title">Confirmation</p>
+        <div class="hover-video-wrap spicehaus-flow-img">
+          <span class="interactive-badge">hover</span>
+          <img class="screen-img" src="spicehaus/confirmation.png" alt="Confirmation screen">
+          <video class="flow-hover-video" muted loop playsinline preload="metadata" onmouseenter="this.play()" onmouseleave="this.pause()">
+            <source src="spicehaus/videos/confirmation.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="detail-section">
+    <h3>Building it responsively</h3>
+    <p>This project was also a deep dive into the build process itself: components, reusable pieces, and responsiveness. I made sure the layout held up cleanly across different screen sizes rather than just at the breakpoints I'd designed for.</p>
+    <div class="responsiveness-video-wrap" style="margin-top: 30px;">
+      <video controls playsinline preload="metadata">
+        <source src="spicehaus/responsiveness.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+
+  <div class="detail-section">
+    <h3 style="margin-bottom:16px;">Design system</h3>
+    <p style="margin-bottom:32px;">Keeping styles consistent across the project meant working in an organized way and documenting everything as I went.</p>
+    <div style="margin-bottom:48px;">
+      <p class="design-sys-label">Color palette</p>
+      <img src="spicehaus/Colors.png" alt="Spicehaus color palette" style="width:100%; border-radius:8px; display:block;">
+    </div>
+    <div>
+      <p class="design-sys-label">Typography</p>
+      <div class="screen-img-wrap" onclick="openLightbox('spicehaus/Typography.png')">
+        <img class="screen-img" src="spicehaus/Typography.png" alt="Spicehaus typography scale">
+        <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer" style="text-align:center; padding:60px 20px 40px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
+    <a href="#" onclick="copyValue(event, this, 'greenbergmaya@gmail.com')" style="color:#444; margin-right:20px;">greenbergmaya@gmail.com</a>
+    <a href="#" onclick="copyValue(event, this, '+972 58 454 4921')" style="color:#444; margin-right:20px;">+972 58 454 4921</a>
+    <a href="https://www.linkedin.com/in/greenbergmaya/" target="_blank" style="color:#444;">LinkedIn</a>
+  </footer>
+</section>
+
+<!-- PROJECT DETAIL: THE FINAL DINNER -->
+<section class="page" id="project-final-dinner">
+  <div class="detail-hero framed">
+    <h1 style="font-family:'Italiana', serif; font-size:44px; -webkit-text-stroke:1px #1a1a1a; color:#1a1a1a; line-height:1.15; margin:0 0 6px;">The Final Dinner</h1>
+    <div style="font-family:'Italiana', serif; font-size:20px; font-style:italic; font-weight:700; color:#a01c1c; margin-bottom:16px;">at Black's Manor</div>
+    <div class="meta">RSVP landing page & event app</div>
+    <p class="summary">An RSVP for a mysterious, highly exclusive dinner. Registrants aren't quite told what they're signing up for, only that it's very exclusive, and that if chosen, they get to play a meaningful character in the town's own story. The concept borrows the format of a murder mystery party, with the interaction style inspired by the board game Cluedo.</p>
+  </div>
+
+  <div class="detail-section">
+    <div class="spicehaus-video-row">
+      <div class="spicehaus-video-item">
+        <video controls playsinline preload="auto" style="border-radius:14px; border:2.5px solid #d5d4d4;">
+          <source src="the-final-dinner/RSVP.mp4" type="video/mp4">
+        </video>
+        <p class="video-caption" style="font-weight:700; color:#1a1a1a; margin-top:12px; margin-bottom:2px;">RSVP landing page</p>
+        <p class="video-caption" style="margin-top:0;">The invitation, before the event</p>
+      </div>
+      <div class="spicehaus-video-item">
+        <video controls playsinline preload="auto" style="border-radius:14px; border:2.5px solid #d5d4d4;">
+          <source src="the-final-dinner/APP.mp4" type="video/mp4">
+        </video>
+        <p class="video-caption" style="font-weight:700; color:#1a1a1a; margin-top:12px; margin-bottom:2px;">App</p>
+        <p class="video-caption" style="margin-top:0;">Accompanying you during the event</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-section">
+    <h3 style="text-align:center; margin-bottom:24px;">Animations</h3>
+    <div class="monkey-videos-container">
+      <div class="monkey-video-card">
+        <video muted loop playsinline preload="metadata" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;" style="width:100%; border-radius:8px; display:block; cursor:pointer;">
+          <source src="the-final-dinner/animation-1.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="monkey-video-card">
+        <video muted loop playsinline preload="metadata" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;" style="width:100%; border-radius:8px; display:block; cursor:pointer;">
+          <source src="the-final-dinner/animation-2.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="monkey-video-card">
+        <video muted loop playsinline preload="metadata" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;" style="width:100%; border-radius:8px; display:block; cursor:pointer;">
+          <source src="the-final-dinner/animation-3.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="monkey-video-card">
+        <video muted loop playsinline preload="metadata" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;" style="width:100%; border-radius:8px; display:block; cursor:pointer;">
+          <source src="the-final-dinner/animation-4.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <p style="font-size: 12px; color: #888; margin: 16px auto 0; text-align: center; max-width: none;">Play with Hover</p>
+  </div>
+
+  <div class="detail-section">
+    <h3 style="text-align:center; margin-bottom: 24px;">Moodboard</h3>
+    <div class="mood-carousel" id="moodCarousel">
+      <button class="carousel-btn" onclick="carouselMove('moodCarousel', -1)" aria-label="Previous slide">‹</button>
+      <img id="moodCarouselImg" src="the-final-dinner/slide-1.png" alt="Moodboard slide" onclick="openLightbox(this.src)">
+      <button class="carousel-btn" onclick="carouselMove('moodCarousel', 1)" aria-label="Next slide">›</button>
+    </div>
+    <p class="carousel-counter" id="moodCarouselCounter">1 / 7</p>
+  </div>
+
+  <div class="detail-section">
+    <h3 style="text-align:center; margin-bottom: 24px;">Initial flow</h3>
+    <div class="screen-img-wrap" style="max-width:820px; margin:0 auto;" onclick="openWireframeLightbox('the-final-dinner/initial-flow-idea.png')">
+      <img class="screen-img" src="the-final-dinner/initial-flow-idea.png" alt="Initial flow idea">
+      <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+    </div>
+  </div>
+
+  <div class="detail-section">
+    <h3 style="text-align:center; margin-bottom: 24px;">Wireframes</h3>
+    <div style="display:flex; align-items:flex-start; justify-content:center; gap:24px; flex-wrap:wrap;">
+      <div class="screen-item" style="flex:none; width:200px;">
+        <p class="spicehaus-screen-title">Landing page</p>
+        <div class="screen-img-wrap" onclick="openLightbox('the-final-dinner/landing-page-wireframe.png')" style="border:1px solid #ddd; border-radius:6px; overflow:hidden;">
+          <img class="screen-img" src="the-final-dinner/landing-page-wireframe.png" alt="Landing page wireframe">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+      <div class="screen-item">
+        <p class="spicehaus-screen-title">App</p>
+        <div class="screen-img-wrap" onclick="openLightbox('the-final-dinner/black-app-wireframe.png')" style="border:1px solid #ddd; border-radius:6px; overflow:hidden;">
+          <img class="screen-img" src="the-final-dinner/black-app-wireframe.png" alt="App wireframe">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-section">
+    <h3 style="text-align:center; margin-bottom: 24px;">Color exploration</h3>
+    <div style="display:flex; align-items:flex-start; justify-content:center; gap:20px; flex-wrap:wrap;">
+      <div class="screen-item" style="flex:1; min-width:180px;">
+        <p class="spicehaus-screen-title">Card</p>
+        <div class="screen-img-wrap" onclick="openLightbox('the-final-dinner/card-color-options.png')">
+          <img class="screen-img" src="the-final-dinner/card-color-options.png" alt="Card color options">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+      <div class="screen-item" style="flex:1; min-width:180px;">
+        <p class="spicehaus-screen-title">Hero</p>
+        <div class="screen-img-wrap" onclick="openLightbox('the-final-dinner/hero-color-options.png')">
+          <img class="screen-img" src="the-final-dinner/hero-color-options.png" alt="Hero color options">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+      <div class="screen-item" style="flex:1; min-width:180px;">
+        <p class="spicehaus-screen-title">Screen</p>
+        <div class="screen-img-wrap" onclick="openLightbox('the-final-dinner/screen-color-options.png')">
+          <img class="screen-img" src="the-final-dinner/screen-color-options.png" alt="Screen color options">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+      <div class="screen-item" style="flex:1; min-width:180px;">
+        <p class="spicehaus-screen-title">Map screen</p>
+        <div class="screen-img-wrap" onclick="openLightbox('the-final-dinner/map-sreen-color-options.png')">
+          <img class="screen-img" src="the-final-dinner/map-sreen-color-options.png" alt="Map screen color options">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-section">
+    <h3 style="text-align:center; margin-bottom: 24px;">Final flow</h3>
+    <div style="margin-bottom:40px; text-align:center;">
+      <p class="spicehaus-screen-title" style="text-align:center;">App</p>
+      <div class="detail-media" style="padding:0; margin:0 auto;">
+        <img src="the-final-dinner/app-screen-breakdown.png" alt="App screen breakdown" style="width:100%; border-radius:8px; display:block; cursor:pointer; border:1px solid #ddd;" onclick="openWireframeLightbox(this.src)">
+      </div>
+    </div>
+    <div style="text-align:center;">
+      <p class="spicehaus-screen-title" style="text-align:center;">Landing page</p>
+      <div class="detail-media" style="padding:0; margin:0 auto;">
+        <img src="the-final-dinner/final-landing-page.png" alt="Final landing page flow overview" style="width:100%; border-radius:8px; display:block; cursor:pointer; border:1px solid #ddd;" onclick="openWireframeLightbox(this.src)">
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer" style="text-align:center; padding:60px 20px 40px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
+    <a href="#" onclick="copyValue(event, this, 'greenbergmaya@gmail.com')" style="color:#444; margin-right:20px;">greenbergmaya@gmail.com</a>
+    <a href="#" onclick="copyValue(event, this, '+972 58 454 4921')" style="color:#444; margin-right:20px;">+972 58 454 4921</a>
+    <a href="https://www.linkedin.com/in/greenbergmaya/" target="_blank" style="color:#444;">LinkedIn</a>
+  </footer>
+</section>
+
+<!-- PROJECT DETAIL: VINYL -->
+<section class="page" id="project-vinyl">
+  <div class="detail-hero framed">
+    <h1 style="font-family:'Italiana', serif; font-size:40px; -webkit-text-stroke:1px #1a1a1a; color:#1a1a1a; line-height:1.15; margin:0 0 2px; text-align:left;">Kids Against The Machine</h1>
+    <div style="font-size:15px; color:#a01c1c; font-style:italic; margin-bottom:16px; text-align:left;">by Noga Erez</div>
+    <div class="meta" style="text-align:left;">Vinyl design</div>
+    <p class="summary" style="margin:0; text-align:left;">Handmade vinyl packaging built around Noga Erez's fully acoustic album, Kids Against the Machine.</p>
+  </div>
+
+  <div class="detail-section">
+    <h3>The concept</h3>
+    <p>This is the acoustic version of Kids. I went with handwritten type and an anarchistic, raw vibe, since the album is about rebelling against machines, technology, and effects. Everything on it was recorded practically, so the design follows that same spirit.</p>
+  </div>
+
+  <div class="detail-media">
+    <img src="vinyl/mockup.png" alt="Kids Against The Machine vinyl mockup" style="width:100%; max-width:900px; margin:0 auto; display:block; border-radius:8px; cursor:pointer;" onclick="openWireframeLightbox(this.src)">
+  </div>
+
+  <div class="detail-section">
+    <h3 style="text-align:center;">Motion</h3>
+    <p style="text-align:center; max-width:none; margin:0 0 24px;">Imagining how this vinyl would move if it could.</p>
+    <div class="detail-media" style="padding:0; margin:0 auto; max-width:700px;">
+      <video controls playsinline preload="auto" style="width:100%; border-radius:10px; display:block;">
+        <source src="vinyl/vinyl-motion.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+
+  <div class="detail-section">
+    <div style="display:flex; gap:24px; align-items:flex-start; justify-content:center; flex-wrap:wrap;">
+      <div class="screen-img-wrap" style="flex:1; min-width:280px; max-width:500px;" onclick="openLightbox('vinyl/vinyl-photo.jpg')">
+        <img class="screen-img" src="vinyl/vinyl-photo.jpg" alt="Vinyl photo">
+        <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      </div>
+      <div class="screen-img-wrap" style="flex:1; min-width:280px; max-width:500px;" onclick="openLightbox('vinyl/vinyl-photo-2.jpg')">
+        <img class="screen-img" src="vinyl/vinyl-photo-2.jpg" alt="Vinyl photo 2">
+        <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-section">
+    <h3 style="text-align:center; margin-bottom:8px;">Process</h3>
+    <p style="text-align:center; max-width:none; margin:0 0 24px; color:#888; font-size:14px;">Hover to see the unedited originals.</p>
+    <div style="display:flex; gap:20px; align-items:flex-start; justify-content:center; flex-wrap:wrap;">
+      <div class="hover-reveal-wrap" style="flex:1; min-width:220px; max-width:340px;">
+        <img class="base-img" src="vinyl/sketches-1_2.jpg" alt="Sketch, edited">
+        <img class="hover-img" src="vinyl/sketches-1.jpg" alt="Sketch, original">
+        <div class="hover-badge">Hover</div>
+      </div>
+      <div class="hover-reveal-wrap" style="flex:1; min-width:220px; max-width:340px;">
+        <img class="base-img" src="vinyl/sketches-2_2.jpg" alt="Sketch, edited">
+        <img class="hover-img" src="vinyl/sketches-2_1.jpg" alt="Sketch, original">
+        <div class="hover-badge">Hover</div>
+      </div>
+      <div class="hover-reveal-wrap" style="flex:1; min-width:220px; max-width:340px;">
+        <img class="base-img" src="vinyl/sketches-5_2.jpg" alt="Sketch, edited">
+        <img class="hover-img" src="vinyl/sketches-5_1.jpg" alt="Sketch, original">
+        <div class="hover-badge">Hover</div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer" style="text-align:center; padding:60px 20px 40px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
+    <a href="#" onclick="copyValue(event, this, 'greenbergmaya@gmail.com')" style="color:#444; margin-right:20px;">greenbergmaya@gmail.com</a>
+    <a href="#" onclick="copyValue(event, this, '+972 58 454 4921')" style="color:#444; margin-right:20px;">+972 58 454 4921</a>
+    <a href="https://www.linkedin.com/in/greenbergmaya/" target="_blank" style="color:#444;">LinkedIn</a>
+  </footer>
+</section>
+
+<!-- PROJECT DETAIL: BONUS PROJECTS -->
+<section class="page" id="project-bonus">
+  <div class="detail-hero framed">
+    <h1 style="font-size:40px; margin:0 0 6px;">Bonus Projects</h1>
+    <div class="meta">Extra work</div>
+    <p class="summary">A few smaller pieces made along the way: illustration, motion, and stop motion. A bit of hand drawn, tactile work between the digital.</p>
+  </div>
+
+  <div class="detail-section" style="margin-top: 30px;">
+    <div class="bonus-frame">
+      <h3>The Caterpillar and the Giraffe</h3>
+      <p class="bonus-subtitle">Illustrations inspired by Kitty Crowther</p>
+      <div class="bonus-illustration-row">
+        <div class="screen-img-wrap" onclick="openLightbox('bonus/snail-1.png')">
+          <img class="screen-img" src="bonus/snail-1.png" alt="Illustration 1">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+        <div class="screen-img-wrap" onclick="openLightbox('bonus/snail-2.png')">
+          <img class="screen-img" src="bonus/snail-2.png" alt="Illustration 2">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+        <div class="screen-img-wrap" onclick="openLightbox('bonus/snail-3.png')">
+          <img class="screen-img" src="bonus/snail-3.png" alt="Illustration 3">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+        <div class="screen-img-wrap" onclick="openLightbox('bonus/snail-4.png')">
+          <img class="screen-img" src="bonus/snail-4.png" alt="Illustration 4">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+        <div class="screen-img-wrap" onclick="openLightbox('bonus/snail-5.png')">
+          <img class="screen-img" src="bonus/snail-5.png" alt="Illustration 5">
+          <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bonus-frame">
+      <h3 style="margin-bottom:28px;">Foreign Substance</h3>
+      <div class="bonus-video-row">
+        <video muted autoplay controls playsinline preload="auto" onloadedmetadata="this.currentTime=0.1; this.pause();">
+          <source src="bonus/episode-1.mp4" type="video/mp4">
+        </video>
+        <video muted autoplay controls playsinline preload="auto" onloadedmetadata="this.currentTime=0.1; this.pause();">
+          <source src="bonus/episode-2.mp4" type="video/mp4">
+        </video>
+        <video muted autoplay controls playsinline preload="auto" onloadedmetadata="this.currentTime=0.1; this.pause();">
+          <source src="bonus/episode-3.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <div class="bonus-frame" style="margin-bottom:0;">
+      <h3 style="margin-bottom:4px;">Loves me, loves me not</h3>
+      <p class="bonus-subtitle">Stop motion animation with felt</p>
+      <div class="bonus-video-row">
+        <video muted autoplay controls playsinline preload="auto" onloadedmetadata="this.currentTime=0.1; this.pause();" style="max-width:500px;">
+          <source src="bonus/loves-me.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer" style="text-align:center; padding:60px 20px 40px; border-top:1px solid #eee; margin-top:100px; font-size:14px; color:#777;">
+    <a href="#" onclick="copyValue(event, this, 'greenbergmaya@gmail.com')" style="color:#444; margin-right:20px;">greenbergmaya@gmail.com</a>
+    <a href="#" onclick="copyValue(event, this, '+972 58 454 4921')" style="color:#444; margin-right:20px;">+972 58 454 4921</a>
+    <a href="https://www.linkedin.com/in/greenbergmaya/" target="_blank" style="color:#444;">LinkedIn</a>
+  </footer>
+</section>
+
+<!-- ABOUT -->
+<section class="page" id="about">
+  <div class="about-main-container">
+    <div class="about-hero-container">
+      <img src="site-design/hi-im-maya.png" alt="Hi! I'm Maya Greenberg">
+    </div>
+    <div class="about-content-container">
+      <div class="about-row-item">
+        <img src="site-design/star-1.svg" alt="" style="width:26px; height:26px; margin-top:4px; flex-shrink:0;">
+        <p style="font-size:24px; font-weight:600; margin:0; text-align: left;">I'm a visual comms, UX/UI student</p>
+      </div>
+      <div class="about-row-item">
+        <img src="site-design/star-2.svg" alt="" style="width:34px; height:34px; margin-top:0; flex-shrink:0; filter: brightness(0) saturate(100%) invert(35%) sepia(28%) saturate(944%) hue-rotate(74deg) brightness(94%) contrast(87%);">
+        <p style="font-size:24px; margin:0; color:#3b6d11; font-weight:600; text-align: left;">My favorite color is Green!</p>
+      </div>
+      <div class="about-row-item">
+        <img src="site-design/star-3.svg" alt="" style="width:26px; height:26px; margin-top:4px; flex-shrink:0;">
+        <p style="font-size:24px; margin:0; color:#333; text-align: left;">I’m former meteorologist in the air force</p>
+      </div>
+      <div style="display:flex; align-items:flex-start; gap:18px; margin-bottom:0;">
+        <span style="font-size:26px; font-weight:400; width:26px; text-align:center; margin-top:2px; flex-shrink:0; color:#1a1a1a;">&amp;</span>
+        <div style="display:flex; align-items:center; gap:22px;">
+          <div>
+            <p style="font-size:24px; margin:0; color:#333; line-height:1.3; text-align: left;">My favorite element<br>in the periodic table is:</p>
+            <p style="font-size:15px; color:#999; margin:4px 0 0; text-align: left;">Guess why...</p>
+          </div>
+          <img src="site-design/magnesium.svg" alt="Magnesium, element 12" style="width:82px; height:auto;">
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer id="about-footer">
+    <div style="font-weight:600;">Contact me!</div>
+    <div style="display:flex; gap:32px;">
+      <a href="#" onclick="copyValue(event, this, 'greenbergmaya@gmail.com')" class="footer-link">greenbergmaya@gmail.com</a>
+      <a href="#" onclick="copyValue(event, this, '+972 58 454 4921')" class="footer-link">+972 58 454 4921</a>
+      <a href="https://www.linkedin.com/in/greenbergmaya/" target="_blank" class="footer-link">LinkedIn</a>
+    </div>
+  </footer>
+</section>
+
+<style>
+  /* Footer link hover and visited states */
+  .footer-link {
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 0.85;
+    transition: opacity 0.2s ease, font-weight 0.2s ease;
+  }
+  .footer-link:visited {
+    color: #ffffff;
+  }
+  .footer-link:hover {
+    opacity: 1;
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  const LIGHTBOX_ZOOM_LEVELS = [1, 1.6, 2.2, 2.8];
+  let lightboxZoomIndex = 0;
+  let lightboxBaseWidth = 0;
+  let lightboxZoomEnabled = false;
+
+  function openLightbox(src) {
+    const img = document.getElementById('lightbox-img');
+    lightboxZoomEnabled = false;
+    document.getElementById('screen-lightbox').style.display = 'flex';
+    resetLightboxZoom();
+    img.style.opacity = '0';
+    img.onload = () => {
+      lightboxBaseWidth = img.clientWidth;
+      img.style.opacity = '1';
+    };
+    img.src = src;
+  }
+  function closeLightbox() {
+    document.getElementById('screen-lightbox').style.display = 'none';
+    resetLightboxZoom();
+  }
+  function openWireframeLightbox(src) {
+    openLightbox(src);
+    lightboxZoomEnabled = true;
+    document.getElementById('lightbox-img').style.cursor = 'zoom-in';
+  }
+  function handleLightboxImgClick(e) {
+    e.stopPropagation();
+    if (lightboxZoomEnabled) cycleLightboxZoom();
+  }
+  function resetLightboxZoom() {
+    lightboxZoomIndex = 0;
+    const img = document.getElementById('lightbox-img');
+    const scroll = document.getElementById('lightbox-img-scroll');
+    img.style.width = '';
+    img.style.maxWidth = '100%';
+    img.style.maxHeight = '90vh';
+    img.style.cursor = lightboxZoomEnabled ? 'zoom-in' : 'default';
+    scroll.style.overflow = 'hidden';
+    scroll.scrollTop = 0;
+    scroll.scrollLeft = 0;
+  }
+  function cycleLightboxZoom() {
+    lightboxZoomIndex = (lightboxZoomIndex + 1) % LIGHTBOX_ZOOM_LEVELS.length;
+    const scale = LIGHTBOX_ZOOM_LEVELS[lightboxZoomIndex];
+    const img = document.getElementById('lightbox-img');
+    const scroll = document.getElementById('lightbox-img-scroll');
+    if (scale === 1) {
+      img.style.width = '';
+      img.style.maxWidth = '100%';
+      img.style.maxHeight = '90vh';
+      img.style.cursor = 'zoom-in';
+      scroll.style.overflow = 'hidden';
+      scroll.scrollTop = 0;
+      scroll.scrollLeft = 0;
+    } else {
+      if (!lightboxBaseWidth) lightboxBaseWidth = img.clientWidth;
+      img.style.maxWidth = 'none';
+      img.style.maxHeight = 'none';
+      img.style.width = (lightboxBaseWidth * scale) + 'px';
+      img.style.cursor = 'zoom-in';
+      scroll.style.overflow = 'auto';
+    }
+  }
+
+  function copyEmail(e, el) {
+    e.preventDefault();
+    const address = 'greenbergmaya@gmail.com';
+    clearTimeout(el._resetTimer);
+
+    if (el.dataset.state === 'revealed') {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(address).catch(() => {});
+      }
+      el.textContent = 'Copied!';
+      el.style.color = '#3b6d11';
+      el.style.fontWeight = '600';
+      el.dataset.state = 'copied';
+      el._resetTimer = setTimeout(() => {
+        el.textContent = 'Email';
+        el.style.color = '';
+        el.style.fontWeight = '';
+        el.dataset.state = '';
+      }, 2500);
+    } else {
+      el.textContent = address;
+      el.style.color = '#3b6d11';
+      el.style.fontWeight = '600';
+      el.dataset.state = 'revealed';
+      el._resetTimer = setTimeout(() => {
+        el.textContent = 'Email';
+        el.style.color = '';
+        el.style.fontWeight = '';
+        el.dataset.state = '';
+      }, 5000);
+    }
+  }
+
+  const carousels = {
+    moodCarousel: {
+      images: [
+        'the-final-dinner/slide-1.png',
+        'the-final-dinner/slide-2.png',
+        'the-final-dinner/slide-3.png',
+        'the-final-dinner/slide-4.png',
+        'the-final-dinner/slide-5.png',
+        'the-final-dinner/slide-6.png',
+        'the-final-dinner/slide-7.png'
+      ],
+      index: 0
+    }
+  };
+  function carouselMove(id, dir) {
+    const c = carousels[id];
+    c.index = (c.index + dir + c.images.length) % c.images.length;
+    document.getElementById(id + 'Img').src = c.images[c.index];
+    document.getElementById(id + 'Counter').textContent = (c.index + 1) + ' / ' + c.images.length;
+  }
+
+  function copyValue(e, el, value) {
+    e.preventDefault();
+    const original = el.dataset.original || el.textContent;
+    el.dataset.original = original;
+    const originalColor = el.dataset.originalColor || el.style.color || '#444';
+    el.dataset.originalColor = originalColor;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(value).catch(() => {});
+    }
+    clearTimeout(el._resetTimer);
+    el.textContent = 'Copied!';
+    el.style.color = '#3b6d11';
+    el.style.fontWeight = '600';
+    el._resetTimer = setTimeout(() => {
+      el.textContent = original;
+      el.style.color = originalColor;
+      el.style.fontWeight = '400';
+    }, 2000);
+  }
+
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    
+    // Toggle body class for header links visibility on About page
+    if (id === 'about') {
+      document.body.classList.add('on-about');
+    } else {
+      document.body.classList.remove('on-about');
+    }
+
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+    const navMatch = document.querySelector('nav a[data-page="' + (id === 'home' || id.startsWith('project') ? 'home' : id) + '"]');
+    if (navMatch) navMatch.classList.add('active');
+
+    const navWorkLink = document.getElementById('navWorkLink');
+    navWorkLink.innerHTML = id.startsWith('project-') ? '<span class="back-arrow">&larr;</span><span>Back to work</span>' : 'Work';
+
+    document.getElementById('floatBackWork').classList.remove('visible');
+    document.getElementById('floatScrollTop').classList.remove('visible');
+
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  window.addEventListener('scroll', () => {
+    const activePage = document.querySelector('.page.active');
+    const floatBackWork = document.getElementById('floatBackWork');
+    const floatScrollTop = document.getElementById('floatScrollTop');
+
+    if (window.scrollY > 150) {
+      floatScrollTop.classList.add('visible');
+    } else {
+      floatScrollTop.classList.remove('visible');
+    }
+
+    if (activePage && activePage.id.startsWith('project-')) {
+      if (window.scrollY > 150) {
+        floatBackWork.classList.add('visible');
+      } else {
+        floatBackWork.classList.remove('visible');
+      }
+    } else {
+      floatBackWork.classList.remove('visible');
+    }
+  });
+
+  document.querySelectorAll('nav a[data-page]').forEach(el => {
+    el.addEventListener('click', () => showPage(el.dataset.page));
+  });
+
+  document.querySelectorAll('.project-row[data-project]').forEach(el => {
+    el.addEventListener('click', () => showPage('project-' + el.dataset.project));
+  });
+
+  function updateSlider(el, descId) {
+    const val = el.value;
+    const container = el.parentElement;
+
+    container.querySelector('.overlay-img').style.clipPath = `polygon(0 0, ${val}% 0, ${val}% 100%, 0 100%)`;
+    container.querySelector('.slider-line').style.left = `${val}%`;
+    container.querySelector('.slider-button').style.left = `${val}%`;
+
+    const desc = document.getElementById(descId || 'plan-pack-desc');
+    if (val > 55) {
+      desc.innerHTML = "<span class='pp-label'>The client:</span><span>Plans the outfits</span>";
+    } else if (val < 45) {
+      desc.innerHTML = "<span class='pp-label'>The photographer:</span><span>Packs the gear</span>";
+    } else {
+      desc.innerHTML = "<span>Drag to switch views</span>";
+    }
+  }
+
+  function openComparisonLightbox() {
+    const lightbox = document.getElementById('comparison-lightbox');
+    lightbox.style.display = 'flex';
+    const range = document.getElementById('lightbox-slider-range');
+    range.value = 50;
+    updateSlider(range, 'comparison-lightbox-desc');
+  }
+  function closeComparisonLightbox() {
+    document.getElementById('comparison-lightbox').style.display = 'none';
+  }
+</script>
+
+</body>
+</html>

@@ -1631,6 +1631,7 @@
       video.src = realSrc;
       video.currentTime = 0;
       video.muted = false;
+      video.volume = 0.2;
       video.play().catch(() => {});
       return;
     }

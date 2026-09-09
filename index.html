@@ -5,9 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maya Greenberg | Portfolio</title>
 <link rel="icon" type="image/png" href="site-design/favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Dokdo&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Dokdo&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dokdo&display=swap" rel="stylesheet">
+</noscript>
 <style>
   * { box-sizing: border-box; }
   html { scrollbar-gutter: stable; }
@@ -439,6 +446,105 @@
     .monkey-video-card { flex: 0 0 calc(33.333% - 8px); margin-bottom: 16px; }
   }
 
+  /* ============================================================
+     MOBILE RESPONSIVENESS PASS - everything below is scoped to
+     narrow viewports only, so nothing here changes desktop at all.
+     ============================================================ */
+
+  /* Safety net: nothing on the page should ever force a horizontal
+     scrollbar on mobile, no matter what fixed-width element is
+     hiding somewhere. Scoped to mobile only - overflow-x:hidden on
+     html/body unconditionally would break position:sticky (Fig-Monkey's
+     corner video) everywhere, including desktop, since an overflow
+     value other than visible on an ancestor breaks sticky's
+     containing-block calculation. */
+  @media (max-width: 700px) {
+    html, body { overflow-x: hidden; }
+  }
+
+  @media (max-width: 700px) {
+    /* The classic flexbox mobile bug: flex items default to
+       min-width:auto, which stops them from shrinking below their
+       content's natural size even when the row is set to wrap -
+       this is what was pushing whole sections wider than the
+       screen on several project pages. */
+    .screen-item, .screen-img-wrap, .monkey-video-card,
+    .spicehaus-video-item, .detail-media, .detail-section,
+    .mobile-flow-row, .payments-stack-row, .about-content-row,
+    .monkey-videos-container, .bonus-video-row, .bonus-illustration-row {
+      min-width: 0 !important;
+    }
+
+    /* Oh Shoot's 5-across "Book / Get inspired / Plan & Pack / Schedule /
+       Deliver" row: 2-up instead of a single 5-wide row that can't fit. */
+    .mobile-flow-row {
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+      gap: 24px !important;
+    }
+    .mobile-flow-row .screen-item {
+      flex: 0 0 calc(50% - 12px) !important;
+    }
+    .mobile-flow-row .screen-arrow { display: none !important; }
+
+    /* Generic utility for decorative multi-column comparison rows (e.g. Final
+       Dinner's "Color exploration" swatches) that would otherwise shrink to
+       illegible slivers under the min-width:0 fix above - forces a clean
+       2-column grid on mobile instead. */
+    .mobile-2up-row { gap: 12px !important; }
+    .mobile-2up-row > .screen-item {
+      flex: 0 0 calc(50% - 6px) !important;
+      min-width: 0 !important;
+    }
+
+    /* Oh Shoot's overlapping payment-screens stack: the desktop version
+       art-directs overlap and vertical offset with fixed widths and
+       transforms - none of that fits a phone screen, so on mobile it
+       becomes a plain centered vertical stack instead. */
+    .payments-stack-row {
+      flex-direction: column !important;
+      align-items: center !important;
+      padding: 0 0 20px !important;
+    }
+    .payments-stack-row .screen-img-wrap {
+      width: 100% !important;
+      max-width: 280px !important;
+      margin: 0 0 20px 0 !important;
+      transform: none !important;
+    }
+
+    /* About page: the bio rows + portrait photo no longer force a
+       nowrap row (which was overflowing the screen) - they wrap, and
+       the portrait centers itself above/below the text instead of
+       squeezing into a fixed 150px column. */
+    .about-content-row { flex-wrap: wrap !important; }
+    .about-portrait { margin: 0 auto 12px !important; }
+    #about-footer { flex-wrap: wrap !important; gap: 12px !important; justify-content: flex-start !important; }
+    .about-footer-links { flex-wrap: wrap !important; gap: 12px 20px !important; }
+
+    /* Fig-Monkey's corner video used to sit beside the content in a
+       flex row - on a phone screen there's no room for that, so the
+       frame stacks vertically and the video becomes a normal block
+       above the content instead of a sticky corner element. */
+    #figMonkeyMegaFrame { flex-direction: column !important; }
+    #figMonkeyMegaFrame .fm-content-col { max-width: 100% !important; }
+    #figMonkeyVideoWrap {
+      position: static !important;
+      width: 160px !important;
+      margin: 0 auto 24px auto !important;
+    }
+    .detail-hero, .detail-hero.framed, .detail-media, .detail-section {
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }
+    #figMonkeyUnstickLeft, #figMonkeyUnstickRight, #figMonkeyRestick { display: none !important; }
+  }
+
+  @media (max-width: 480px) {
+    /* On the narrowest phones, even 2-up is too tight - drop to one per row. */
+    .mobile-flow-row .screen-item { flex: 0 0 100% !important; }
+  }
+
   /* --- ABOUT PAGE: fit-to-screen content area, footer always pinned below --- */
   #about.active {
     display: flex;
@@ -536,7 +642,7 @@
 <button class="floating-next-project" id="floatNextProject" onclick="goToNextProject()">Next project →</button>
 <button class="floating-scrollTop" id="floatScrollTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑ Top</button>
 
-<div id="screen-lightbox" onclick="if(event.target === this) closeLightbox()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); z-index:999; align-items:center; justify-content:center;">
+<div id="screen-lightbox" onclick="if(event.target === this) closeLightbox()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); z-index:999; align-items:center; justify-content:center; padding-top:60px; box-sizing:border-box;">
   <div id="lightbox-label" style="display:none; position:fixed; top:26px; left:30px; z-index:1002; color:#fff; font-size:14px; letter-spacing:0.3px;">
     <div id="lightbox-label-main" style="opacity:0.85;"></div>
     <div id="lightbox-label-sub" style="display:none; font-size:12px; opacity:0.5; margin-top:2px; font-weight:600;"></div>
@@ -547,7 +653,7 @@
   <button id="lightbox-next" onclick="event.stopPropagation(); lightboxNav(1)" aria-label="Next" style="display:none; position:fixed; right:20px; top:50%; transform:translateY(-50%); z-index:1002; background:rgba(255,255,255,0.08); border:none; color:#fff; width:48px; height:48px; border-radius:50%; font-size:24px; line-height:1; cursor:pointer; align-items:center; justify-content:center; transition:opacity 0.2s ease;">&#8250;</button>
   <div id="lightbox-img-scroll" style="max-width:90%; max-height:90%; overflow:hidden;" onclick="event.stopPropagation();">
     <div id="lightbox-img-wrap" style="position:relative; display:inline-block;">
-      <img id="lightbox-img" src="" alt="" onclick="handleLightboxImgClick(event)" style="max-width:100%; max-height:90vh; border-radius:8px; display:block; transition:opacity 0.15s ease;">
+      <img id="lightbox-img" src="" alt="" onclick="handleLightboxImgClick(event)" style="max-width:100%; max-height:80vh; border-radius:8px; display:block; transition:opacity 0.15s ease;">
       <video id="lightbox-video" controls playsinline style="display:none; max-width:90vw; max-height:90vh; border-radius:8px;"></video>
       <div id="lightbox-compare" style="display:none; width:280px; max-width:90vw;" onclick="event.stopPropagation();">
         <div class="comparison-slider" style="box-shadow:none;">
@@ -695,7 +801,7 @@
   </div>
 
   <div class="detail-section" style="max-width:1100px;">
-    <div style="display:flex; align-items:flex-start; justify-content:flex-start; gap:18px;">
+    <div class="mobile-flow-row" style="display:flex; align-items:flex-start; justify-content:flex-start; gap:18px;">
 
       <div class="screen-item">
         <p class="screen-title">Book</p>
@@ -789,7 +895,7 @@
 
   <div class="detail-section" style="max-width:1100px; margin-top:100px;">
     <p style="font-family:'Italiana', serif; color:#1a1a1a; -webkit-text-stroke:1px #1a1a1a; font-size:38px; line-height:1.2; margin:0 0 40px; text-transform:uppercase; text-align: left;">Manage<br>your projects<br>and payments</p>
-    <div style="display:flex; align-items:flex-end; justify-content:flex-start; padding:20px 0 40px;">
+    <div class="payments-stack-row" style="display:flex; align-items:flex-end; justify-content:flex-start; padding:20px 0 40px;">
       <div class="screen-img-wrap" onclick="openLightbox('oh-shoot/project-payments/client-cards.png', ohShootPaymentsGallery, 0, 'Manage your projects and payments')" style="width:220px; flex-shrink:0; z-index:1; transform:translateY(60px);">
         <img class="screen-img" src="oh-shoot/project-payments/client-cards.png" alt="Client cards and tasks screen">
         <div class="zoom-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
@@ -1099,7 +1205,7 @@
 
   <div class="detail-section">
     <h3 style="text-align: center;">User flow</h3>
-    <div style="display:flex; align-items:flex-start; justify-content:flex-start; gap:28px; flex-wrap:wrap; margin-top:10px;">
+    <div class="mobile-flow-row" style="display:flex; align-items:flex-start; justify-content:flex-start; gap:28px; flex-wrap:wrap; margin-top:10px;">
 
       <!-- 1. Browse shop (Interactive with splashscreen.mp4) -->
       <div class="screen-item">
@@ -1290,7 +1396,7 @@
 
   <div class="detail-section">
     <h3 style="text-align:center; margin-bottom: 24px;">Color exploration</h3>
-    <div style="border:1px solid #e2e2e2; border-radius:16px; padding:24px; display:flex; align-items:flex-start; justify-content:center; gap:20px; flex-wrap:wrap;">
+    <div class="mobile-2up-row" style="border:1px solid #e2e2e2; border-radius:16px; padding:24px; display:flex; align-items:flex-start; justify-content:center; gap:20px; flex-wrap:wrap;">
       <div class="screen-item" style="flex:1; min-width:180px;">
         <p class="spicehaus-screen-title">Card</p>
         <div class="screen-img-wrap" onclick="openLightbox('the-final-dinner/card-color-options.png', finalDinnerColorGallery, 0, 'Color exploration')">
@@ -1524,7 +1630,7 @@
   
   <footer id="about-footer">
     <div style="font-weight:600;">Contact me!</div>
-    <div style="display:flex; gap:32px;">
+    <div class="about-footer-links" style="display:flex; gap:32px;">
       <a href="#" onclick="copyValue(event, this, 'greenbergmaya@gmail.com')" class="footer-link">greenbergmaya@gmail.com</a>
       <a href="#" onclick="copyValue(event, this, '+972-58-454-4921')" class="footer-link">+972-58-454-4921</a>
       <a href="https://www.linkedin.com/in/greenbergmaya/" target="_blank" class="footer-link">LinkedIn</a>
@@ -1993,14 +2099,18 @@
     e.preventDefault();
     const original = el.dataset.original || el.textContent;
     el.dataset.original = original;
-    const originalColor = el.dataset.originalColor || el.style.color || '#444';
+    const originalColor = el.dataset.originalColor || el.style.color || getComputedStyle(el).color;
     el.dataset.originalColor = originalColor;
+    // On the green About footer, white reads clearly; everywhere else (white
+    // background) the green accent still works fine.
+    const onGreenFooter = !!el.closest('#about-footer');
+    const flashColor = onGreenFooter ? '#ffffff' : '#3b6d11';
     if (navigator.clipboard) {
       navigator.clipboard.writeText(value).catch(() => {});
     }
     clearTimeout(el._resetTimer);
     el.textContent = 'Copied!';
-    el.style.color = '#3b6d11';
+    el.style.color = flashColor;
     el.style.fontWeight = '600';
     el._resetTimer = setTimeout(() => {
       el.textContent = original;
@@ -2155,6 +2265,13 @@
     history.scrollRestoration = 'manual';
   }
   window.scrollTo(0, 0);
+  // Default every video on the site to a gentle 20% volume, so nobody gets
+  // startled by a video suddenly playing at full blast - covers the vinyl
+  // motion piece, the bonus title videos, the stop-motion piece, etc. This
+  // only sets the starting level; the native controls still let anyone turn
+  // it up themselves.
+  document.querySelectorAll('video').forEach(v => { v.volume = 0.2; });
+
   window.addEventListener('load', () => window.scrollTo(0, 0));
 
   const projectOrder = ['oh-shoot', 'fig-monkey', 'spicehaus', 'final-dinner', 'vinyl', 'bonus'];
@@ -2163,7 +2280,7 @@
     'fig-monkey': 'Fig-Monkey',
     'spicehaus': 'Spicehaus',
     'final-dinner': 'The Final Dinner',
-    'vinyl': 'Kids Against The Machine',
+    'vinyl': 'Vinyl',
     'bonus': 'Bonus Projects'
   };
   function getNextProjectId(currentId) {
@@ -2344,8 +2461,17 @@
     const requestedId = (location.hash || '').replace('#', '');
     const requestedPage = requestedId ? document.getElementById(requestedId) : null;
     const startId = (requestedPage && requestedPage.classList.contains('page')) ? requestedId : 'home';
-    showPage(startId, false);
-    history.replaceState({ page: startId }, '', '#' + startId);
+    if (startId === 'home') {
+      // The static markup already shows #home as active with everything else
+      // (nav state, floating buttons) in its correct default position - so
+      // just normalize the URL instead of re-running showPage(), which would
+      // strip and re-add the 'active' class for no reason and could retrigger
+      // the fade-in animation, causing a visible flicker on first paint.
+      history.replaceState({ page: 'home' }, '', '#home');
+    } else {
+      showPage(startId, false);
+      history.replaceState({ page: startId }, '', '#' + startId);
+    }
   })();
 </script>
 
